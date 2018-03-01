@@ -2,9 +2,11 @@ import numpy as np
 import cv2 as cv
 import add_defect as ad
 
-for n in range(1,20):
+for n in range(1,100):
 	m = int(np.random.uniform(1,3369))
-	print(m)
+	print(n,m)
 	
-	dot = ad.AddDefect(m,n)
-	dot.add_dot()
+	df = ad.AddDefect(m,n)
+	#df.add_dot()
+	#df.add_spot()
+	df.add_cut()

@@ -1,9 +1,12 @@
 import numpy as np
 import cv2 as cv
 
+# cut the raw background images into 300*300 small ones
+
 r=300 # edges of raw background pics are blank, cut them
 c=300
 n_pic=1   # ordinal of separate pics
+
 for ii in range(0,10):
 	print(ii)
 	img = cv.imread('./raw_background/'+str(ii)+'.tif')

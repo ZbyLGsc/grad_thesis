@@ -1,0 +1,5 @@
+abrasion
+cut
+spot
+dot
+normal

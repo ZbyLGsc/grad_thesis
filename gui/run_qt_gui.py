@@ -25,8 +25,43 @@ class DefectClassWindow:
         self.image_label.setPixmap(QtGui.QPixmap(400, 400))
         self.layout.addWidget(self.image_label)
 
-        # label to show classification result
-        self.label = QtGui.QLabel(self.widget)
+        # frame and labels to show classification result
+        class_num = 5
+
+        # create frame and grid layout to contains all labels
+        frame = QtGui.QFrame()
+        grid = QtGui.QGridLayout()
+
+        # create labels
+        self.class_labels = []
+        self.prob_labels = []
+        for i in range(class_num):
+            lb1 = QtGui.QLabel()
+            lb1.setAlignment(QtCore.Qt.AlignCenter)
+            lb1.setFrameShadow(QtGui.QFrame.Sunken)
+            lb1.setFrameStyle(QtGui.QFrame.StyledPanel)
+
+            lb2 = QtGui.QLabel()
+            lb2.setAlignment(QtCore.Qt.AlignCenter)
+            lb2.setFrameShadow(QtGui.QFrame.Sunken)
+            lb2.setFrameStyle(QtGui.QFrame.StyledPanel)
+
+            grid.addWidget(lb1, i, 0)
+            grid.addWidget(lb2, i, 1)
+
+            self.class_labels.append(lb1)
+            self.prob_labels.append(lb2)
+
+        frame.setLayout(grid)
+        frame.setFrameShape(QtGui.QFrame.Panel)
+        frame.setFrameShadow(QtGui.QFrame.Plain)
+        self.layout.addWidget(frame)
+
+        # create hint label
+        self.label = QtGui.QLabel()
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setFrameShape(QtGui.QFrame.Panel)
+        self.label.setFrameShadow(QtGui.QFrame.Plain)
         self.label.setText("Please select an image.")
         self.layout.addWidget(self.label)
 
@@ -46,16 +81,18 @@ class DefectClassWindow:
             pixmap = QtGui.QPixmap(file).scaled(400, 400)
             self.image_label.setPixmap(pixmap)
 
-        # call tensorflow API to get classification result
-        res_label, res_prob = self.model.predict(str(file))
+            # call tensorflow API to get classification result
+            res_label, res_prob = self.model.predict(str(file))
 
-        # update label text
-        res_str = ''
-        for i in range(len(res_label)):
-            res_str += str(res_label[i])+': '+str(res_prob[i])+'\n'
-        print res_str
+            # update label text
+            for i in range(len(res_label)):
+                self.class_labels[i].setText(str(res_label[i]))
+                self.prob_labels[i].setText(str(res_prob[i]))
 
-        self.label.setText(res_str)
+            self.label.setText('Classification finished! Select another image to continue.')
+
+        else:
+            self.label.setText('Image not opened, try another image.')
 
 
 def main():
@@ -69,11 +106,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-
-# python tensorflow/examples/label_image/label_image.py \
-# --graph=/home/zby/workspaces/grad_thesis_ws/trained_model/inception_v3/output_graph.pb \
-# --labels=/home/zby/workspaces/grad_thesis_ws/trained_model/inception_v3/output_labels.txt \
-# --input_layer=Mul \
-# --output_layer=final_result \
-# --input_mean=128 --input_std=128 \
-# --image=/home/zby/workspaces/grad_thesis_ws/generated_images/image_0311/image_0311/abrasion/abrasion_1_2.png

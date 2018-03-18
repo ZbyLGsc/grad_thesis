@@ -9,14 +9,17 @@ import tensorflow as tf
 import time
 
 
-class ModelInterface:
+class FastModelInterface:
 
     def __init__(self):
 
         # model parameters
-        model_file = "../trained_model/inception_v3/output_graph.pb"
-        label_file = "../trained_model/inception_v3/output_labels.txt"
-        input_layer = "Mul"
+        # model_file = "../trained_model/inception_v3/output_graph.pb"
+        # label_file = "../trained_model/inception_v3/output_labels.txt"
+        model_file = "../trained_model/mobilenet_0.25_128/output_graph.pb"
+        label_file = "../trained_model/mobilenet_0.25_128/output_labels.txt"
+        # input_layer = "Mul"
+        input_layer = "input"
         output_layer = "final_result"
         input_name = "import/" + input_layer
         output_name = "import/" + output_layer
@@ -72,8 +75,10 @@ class ModelInterface:
     def predict(self, file_name):
 
         # Input image parameters
-        input_height = 299
-        input_width = 299
+        # input_height = 299
+        # input_width = 299
+        input_height = 128
+        input_width = 128
         input_mean = 128
         input_std = 128
 

@@ -1,4 +1,5 @@
 import model_interface as mi
+import fast_model_Interface as fmi
 import os
 import time
 
@@ -22,7 +23,8 @@ def eval():
     res_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 
     # initialize model
-    model = mi.ModelInterface()
+    # model = mi.ModelInterface()
+    model = fmi.FastModelInterface()
 
     # specify root dir of the validation images
     root_dir = '/home/zby/workspaces/grad_thesis_ws/generated_images/image_0311/test'
@@ -49,6 +51,7 @@ def eval():
 
             time2 = time.time()
             total_time += (time2 - time1)
+            print (time2-time1)
 
             # calculate some data
             if label[0] == class_name:

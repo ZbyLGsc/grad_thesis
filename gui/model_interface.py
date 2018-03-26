@@ -9,15 +9,23 @@ import tensorflow as tf
 import time
 
 
+# currently there are two model: Inception_v3, moiblenet_1.0_224
 class ModelInterface:
 
-    def __init__(self):
+    def __init__(self, model):
 
-        # model parameters
-        model_file = "../trained_model/inception_v3/output_graph.pb"
-        label_file = "../trained_model/inception_v3/output_labels.txt"
-        input_layer = "Mul"
-        output_layer = "final_result"
+        if model == 'Inception':
+            # model parameters
+            model_file = "../trained_model/inception_v3/output_graph.pb"
+            label_file = "../trained_model/inception_v3/output_labels.txt"
+            input_layer = "Mul"
+            output_layer = "final_result"
+        elif model == 'Mobilenet':
+            model_file = "../trained_model/mobilenet_1.0_224/output_graph.pb"
+            label_file = "../trained_model/mobilenet_1.0_224/output_labels.txt"
+            input_layer = "input"
+            output_layer = "final_result"
+
         input_name = "import/" + input_layer
         output_name = "import/" + output_layer
 
@@ -26,6 +34,8 @@ class ModelInterface:
         self.labels = self.load_labels(label_file)
         self.input_operation = self.graph.get_operation_by_name(input_name)
         self.output_operation = self.graph.get_operation_by_name(output_name)
+
+        self.model_type = model
 
     def load_graph(self, model_file):
         graph = tf.Graph()
@@ -72,8 +82,13 @@ class ModelInterface:
     def predict(self, file_name):
 
         # Input image parameters
-        input_height = 299
-        input_width = 299
+        if self.model_type == 'Inception':
+            input_height = 299
+            input_width = 299
+        elif self.model_type == 'Mobilenet':
+            input_height = 224
+            input_width = 224
+
         input_mean = 128
         input_std = 128
 
@@ -81,14 +96,14 @@ class ModelInterface:
                                              input_width=input_width, input_mean=input_mean, input_std=input_std)
 
         with tf.Session(graph=self.graph) as sess:
-            time1 =time.time()
-            
+            time1 = time.time()
+
             results = sess.run(self.output_operation.outputs[0], {
                 self.input_operation.outputs[0]: t
             })
 
             time2 = time.time()
-            print (time2 - time1)
+            print('Session run time:', time2 - time1)
 
         results = np.squeeze(results)
 

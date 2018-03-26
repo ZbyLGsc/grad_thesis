@@ -1,0 +1,6 @@
+cut
+normal
+spot
+abrasion
+chipping
+dot

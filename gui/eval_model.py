@@ -1,13 +1,6 @@
 import model_interface as mi
-import fast_model_Interface as fmi
 import os
 import time
-
-
-def test():
-    s = [1, 2, 3, 4]
-    print s.index(1)
-    print s.index(2)
 
 
 def eval():
@@ -20,14 +13,15 @@ def eval():
     total_time = 0.0
 
     # result matrix, y is truth and x is prediction
-    res_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    res_matrix = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
 
     # initialize model
-    # model = mi.ModelInterface()
-    model = fmi.FastModelInterface()
+    model_inception = mi.ModelInterface('Inception')
+    model_mobilenet = mi.ModelInterface('Mobilenet')
 
     # specify root dir of the validation images
-    root_dir = '/home/zby/workspaces/grad_thesis_ws/generated_images/image_0311/test'
+    root_dir = '/home/zby/Downloads/datasets/board_defect/test'
 
     # find sub dir names under root dir
     class_names = os.listdir(root_dir)
@@ -47,11 +41,24 @@ def eval():
             # use model to label image, while recording time
             time1 = time.time()
 
-            label, prob = model.predict(image_path)
+            # inception prediction
+            label, prob = model_inception.predict(image_path)
+            print '\n--------------------'
+            print 'Inception:'
+            print label
+            print prob
+            print
+
+            # mobilenet prediction
+            label2, prob2 = model_mobilenet.predict(image_path)
+            print 'Mobilenet:'
+            print label2
+            print prob2
+            print '--------------------\n'
 
             time2 = time.time()
             total_time += (time2 - time1)
-            print (time2-time1)
+            # print (time2-time1)
 
             # calculate some data
             if label[0] == class_name:

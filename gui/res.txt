@@ -7,8 +7,10 @@ dot:165
 cut:169
 normal:1315
 
+Inceptionv3:
+
 image_num: 2169
-correct: 2073
+correct: 2073(95.5%)
 false positive: 40
 false nagetive: 18
 wrong type: 38
@@ -21,3 +23,27 @@ Res Matrix:
 [0  , 1  , 6   , 0  , 162, 0  ]
 [0  , 15 , 4   , 0  , 1  , 145]
 average time: 0.899156499206
+
+mobilenet 0.25 128
+image_num: 2169
+correct: 1922(88.6%)
+false positive: 15
+false nagetive: 112
+wrong type: 120
+Res Matrix:
+['abrasion', 'spot', 'normal', 'chipping', 'cut', 'dot']
+[163, 0, 7, 0, 0, 0]
+[0, 136, 20, 1, 1, 7]
+[3, 9, 1300, 0, 3, 0]
+[1, 4, 2, 177, 1, 0]
+[2, 2, 48, 1, 116, 0]
+[1, 87, 35, 6, 6, 30]
+average time: 0.595709354991
+
+git remote add origin https://github.com/ZbyLGsc/addremote.git
+git push -u origin master
+
+python retrain.py --image_dir /home/zby/workspaces/grad_thesis_ws/generated_images/image_0311/test --architecture mobilenet_0.25_128
+
+
+

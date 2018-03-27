@@ -34,6 +34,7 @@ class ModelInterface:
         self.labels = self.load_labels(label_file)
         self.input_operation = self.graph.get_operation_by_name(input_name)
         self.output_operation = self.graph.get_operation_by_name(output_name)
+        self.session = tf.Session()
 
         self.model_type = model
 
@@ -74,8 +75,9 @@ class ModelInterface:
         dims_expander = tf.expand_dims(float_caster, 0)
         resized = tf.image.resize_bilinear(dims_expander, [input_height, input_width])
         normalized = tf.divide(tf.subtract(resized, [input_mean]), [input_std])
-        sess = tf.Session()
-        result = sess.run(normalized)
+        # sess = tf.Session()
+        # result = sess.run(normalized)
+        result = self.session.run(normalized)
 
         return result
 

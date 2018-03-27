@@ -86,21 +86,23 @@ class ModelInterface:
             label.append(l.rstrip())
         return label
 
-    def predict(self, file_name):
+    def modelGraph(self):
+        return self.graph
+
+    def predict(self, file_name, sess):
         # read raw image
         image_data = gfile.FastGFile(file_name, 'rb').read()
 
         # decode image for model input
         resized_image = self.session.run(self.final_image, feed_dict={self.png_data: image_data})
 
-        with tf.Session(graph=self.graph) as sess:
-            time1 = time.time()
+        time1 = time.time()
 
-            results = sess.run(self.output_operation.outputs[0], {
-                               self.input_operation.outputs[0]: resized_image})
+        results = sess.run(self.output_operation.outputs[0], {
+            self.input_operation.outputs[0]: resized_image})
 
-            time2 = time.time()
-            print('Session run time:', time2 - time1)
+        time2 = time.time()
+        # print('Session run time:', time2 - time1)
 
         results = np.squeeze(results)
 

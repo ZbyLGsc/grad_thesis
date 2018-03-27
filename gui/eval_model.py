@@ -7,10 +7,10 @@ import time
 
 def ensemble_predict(pre1, pre2, pre3=None):
     # probability larger than 50% is judged as unnormal
-    threshold = 0.50
+    threshold = 0.60
 
-    # print('pre1: ', pre1[1][pre1[0].index('normal')])
-    # print('pre2: ', pre2[1][pre2[0].index('normal')])
+    print('pre1: ', pre1)
+    print('pre2: ', pre2)
 
     if pre3 == None:
         if pre1[1][pre1[0].index('normal')] > threshold and pre2[1][pre2[0].index('normal')] > threshold:
@@ -46,10 +46,12 @@ def eval():
     model_mobilenet = mi.ModelInterface('Mobilenet')
 
     # specify root dir of the validation images
-    root_dir = '/home/zby/Downloads/datasets/board_defect/test'
+    # root_dir = '/home/zby/Downloads/datasets/board_defect/test'
+    root_dir = '/home/sjtu/Downloads/boyu/bancai_images/test'
 
     # find sub dir names under root dir
     class_names = os.listdir(root_dir)
+    print class_names
 
     #  traverse all image in subdir
     for class_name in class_names:

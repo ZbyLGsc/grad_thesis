@@ -16,12 +16,12 @@ class ModelInterface:
 
         if model == 'Inception':
             # model parameters
-            model_file = "../trained_model/inception_v3/output_graph.pb"
+            model_file = "../trained_model/inception_v3/output_graph_incep.pb"
             label_file = "../trained_model/inception_v3/output_labels.txt"
             input_layer = "Mul"
             output_layer = "final_result"
         elif model == 'Mobilenet':
-            model_file = "../trained_model/mobilenet_1.0_224/output_graph.pb"
+            model_file = "../trained_model/mobilenet_1.0_224/output_graph_mobile.pb"
             label_file = "../trained_model/mobilenet_1.0_224/output_labels.txt"
             input_layer = "input"
             output_layer = "final_result"
@@ -37,8 +37,8 @@ class ModelInterface:
         with tf.device('/device:GPU:0'):
             self.input_operation = self.graph.get_operation_by_name(input_name)
             self.output_operation = self.graph.get_operation_by_name(output_name)
-
-        self.session = tf.Session()
+            self.session = tf.Session()
+            
         self.model_type = model
 
     def load_graph(self, model_file):
@@ -112,7 +112,7 @@ class ModelInterface:
 
         results = np.squeeze(results)
 
-        top_k = results.argsort()[-5:][::-1]
+        top_k = results.argsort()[-6:][::-1]
 
         res_label = []
         res_prob = []

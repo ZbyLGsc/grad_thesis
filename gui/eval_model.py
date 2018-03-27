@@ -47,81 +47,81 @@ def eval():
     model_mobilenet = mi.ModelInterface('Mobilenet')
 
     # specify root dir of the validation images
-    root_dir = '/home/zby/Downloads/datasets/board_defect/test'
-    # root_dir = '/home/sjtu/Downloads/boyu/bancai_images/test'
+    #root_dir = '/home/zby/Downloads/datasets/board_defect/test'
+    root_dir = '/home/sjtu/Downloads/boyu/bancai_images/test'
 
     # find sub dir names under root dir
     class_names = os.listdir(root_dir)
     print class_names
 
     graph1 = model_inception.modelGraph()
-    with tf.Session(graph=graph1) as sess:
-        #  traverse all image in subdir
-        for class_name in class_names:
-            class_path = os.path.join(root_dir, class_name)
-            image_names = os.listdir(class_path)
+    graph2 = model_mobilenet.modelGraph()
+    with tf.Session(graph=graph1) as sess1:
+        with tf.Session(graph=graph2) as sess2:
+            #  traverse all image in subdir
+            for class_name in class_names:
+                class_path = os.path.join(root_dir, class_name)
+                image_names = os.listdir(class_path)
 
-            for image_name in image_names:
-                image_path = os.path.join(class_path, image_name)
-                image_num += 1
+                for image_name in image_names:
+                    image_path = os.path.join(class_path, image_name)
+                    image_num += 1
 
-                print '\n--------------------'
-                if abs(image_num % 1) < 1e-3:
-                    print 'Finished num:', image_num
+                    print '\n--------------------'
+                    if abs(image_num % 1) < 1e-3:
+                        print 'Finished num:', image_num
 
-                # use model to label image, while recording time
-                time1 = time.time()
+                    # use model to label image, while recording time
+                    time1 = time.time()
 
-                # inception prediction
-                label, prob = model_inception.predict(image_path, sess)
-                print 'Inception:'
-                print label
-                print prob
-                print
+                    # inception prediction
+                    label, prob = model_inception.predict(image_path, sess1)
+                    print 'Inception:'
+                    print label
+                    print prob
+                    print
 
-                # mobilenet prediction
-                # label2, prob2 = model_mobilenet.predict(image_path)
-                label2 = label
-                prob2 = prob
-                print 'Mobilenet:'
-                print label2
-                print prob2
+                    # mobilenet prediction
+                    label2, prob2 = model_mobilenet.predict(image_path, sess2)
+                    print 'Mobilenet:'
+                    print label2
+                    print prob2
 
-                time2 = time.time()
-                total_time += (time2 - time1)
-                # print (time2-time1)
+                    time2 = time.time()
+                    total_time += (time2 - time1)
+                    # print (time2-time1)
 
-                # calculate some data
-                if label[0] == class_name:
-                    correct_num += 1
-                # False positive: truth is normal but result shows defect
-                elif class_name == 'normal':
-                    false_positive += 1
-                # False negative: truth has defect but result shows normal
-                elif label[0] == 'normal':
-                    false_negative += 1
-                # Wrong type of defect
-                else:
-                    wrong_type += 1
-
-                res_matrix[class_names.index(class_name)][class_names.index(label[0])] += 1
-
-                # ensemble different model
-                defect = ensemble_predict([label, prob], [label2, prob2])
-                if class_name == 'normal':
-                    if not defect:
-                        ensem_num[0][0] += 1
+                    # calculate some data
+                    if label[0] == class_name:
+                        correct_num += 1
+                    # False positive: truth is normal but result shows defect
+                    elif class_name == 'normal':
+                        false_positive += 1
+                    # False negative: truth has defect but result shows normal
+                    elif label[0] == 'normal':
+                        false_negative += 1
+                    # Wrong type of defect
                     else:
-                        ensem_num[0][1] += 1
-                else:
-                    if not defect:
-                        ensem_num[1][0] += 1
+                        wrong_type += 1
+
+                    res_matrix[class_names.index(class_name)][class_names.index(label[0])] += 1
+
+                    # ensemble different model
+                    defect = ensemble_predict([label, prob], [label2, prob2])
+                    if class_name == 'normal':
+                        if not defect:
+                            ensem_num[0][0] += 1
+                        else:
+                            ensem_num[0][1] += 1
                     else:
-                        ensem_num[1][1] += 1
-                print 'ensemble:'
-                print ensem_num[0]
-                print ensem_num[1]
-                print '--------------------\n'
+                        if not defect:
+                            ensem_num[1][0] += 1
+                        else:
+                            ensem_num[1][1] += 1
+                    print 'ensemble:'
+                    print ensem_num[0]
+                    print ensem_num[1]
+                    print '--------------------\n'
 
     # print final results
     print 'image_num:', image_num

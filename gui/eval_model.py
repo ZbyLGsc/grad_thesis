@@ -2,6 +2,27 @@ import model_interface as mi
 import os
 import time
 
+# usage: prei = [[labeli], [probi]]
+
+
+def ensemble_predict(pre1, pre2, pre3=None):
+    # probability larger than 50% is judged as unnormal
+    threshold = 0.50
+
+    # print('pre1: ', pre1[1][pre1[0].index('normal')])
+    # print('pre2: ', pre2[1][pre2[0].index('normal')])
+
+    if pre3 == None:
+        if pre1[1][pre1[0].index('normal')] > threshold and pre2[1][pre2[0].index('normal')] > threshold:
+            return False
+        else:
+            return True
+    else:
+        if pre1[1][pre1[0].index('normal')] > threshold and pre2[1][pre2[0].index('normal')] > threshold and pre3[1][pre3[0].index('normal')] > threshold:
+            return False
+        else:
+            return True
+
 
 def eval():
     # data to be calculate
@@ -11,6 +32,10 @@ def eval():
     false_negative = 0
     wrong_type = 0
     total_time = 0.0
+    # [ nor nor, nor defect
+    #   def nor, def def
+    # ]
+    ensem_num = [[0, 0], [0, 0]]
 
     # result matrix, y is truth and x is prediction
     res_matrix = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
@@ -54,7 +79,6 @@ def eval():
             print 'Mobilenet:'
             print label2
             print prob2
-            print '--------------------\n'
 
             time2 = time.time()
             total_time += (time2 - time1)
@@ -74,6 +98,23 @@ def eval():
                 wrong_type += 1
 
             res_matrix[class_names.index(class_name)][class_names.index(label[0])] += 1
+
+            # ensemble different model
+            defect = ensemble_predict([label, prob], [label2, prob2])
+            if class_name == 'normal':
+                if not defect:
+                    ensem_num[0][0] += 1
+                else:
+                    ensem_num[0][1] += 1
+            else:
+                if not defect:
+                    ensem_num[1][0] += 1
+                else:
+                    ensem_num[1][1] += 1
+            print 'ensemble:'
+            print ensem_num[0]
+            print ensem_num[1]
+            print '--------------------\n'
 
     # print final results
     print 'image_num:', image_num
@@ -95,7 +136,6 @@ def eval():
 def main():
     print "main:"
     eval()
-    # test()
 
 
 if __name__ == '__main__':

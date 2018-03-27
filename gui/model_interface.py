@@ -32,10 +32,13 @@ class ModelInterface:
         # model and in&out operation
         self.graph = self.load_graph(model_file)
         self.labels = self.load_labels(label_file)
-        self.input_operation = self.graph.get_operation_by_name(input_name)
-        self.output_operation = self.graph.get_operation_by_name(output_name)
-        self.session = tf.Session()
 
+        # prediction on GPU
+        with tf.device('/device:GPU:0'):
+            self.input_operation = self.graph.get_operation_by_name(input_name)
+            self.output_operation = self.graph.get_operation_by_name(output_name)
+
+        self.session = tf.Session()
         self.model_type = model
 
     def load_graph(self, model_file):

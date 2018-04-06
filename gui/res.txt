@@ -1,35 +1,21 @@
-image_num: 2169
-correct: 2073
-false positive: 40
-false nagetive: 18
-wrong type: 38
-Res Matrix:
-['abrasion', 'spot', 'normal', 'chipping', 'cut', 'dot']
-[162, 0, 5, 0, 3, 0]
-[0, 145, 3, 0, 0, 17]
-[11, 12, 1275, 0, 16, 1]
-[0, 0, 0, 184, 0, 1]
-[0, 1, 6, 0, 162, 0]
-[0, 15, 4, 0, 1, 145]
-average time: 1.7541864979
-['/home/sjtu/Downloads/boyu/bancai_images/test/abrasion/abrasion_0316_1702_4028.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_966.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_975.png', '/home/sjtu/Downloads/boyu/bancai_images/test/dot/dot_03171730_919.png']
 
 git remote add origin https://github.com/ZbyLGsc/addremote.git
 git push -u origin master
 
 python retrain.py --image_dir /home/zby/Downloads/datasets/board_defect/test
 
-[1210, 105]
-[6, 848]
-['/home/sjtu/Downloads/boyu/bancai_images/test/abrasion/abrasion_0316_1702_4028.png', '/home/sjtu/Downloads/boyu/bancai_images/test/spot/spot_9924.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_966.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_975.png', '/home/sjtu/Downloads/boyu/bancai_images/test/dot/dot_03171730_966.png', '/home/sjtu/Downloads/boyu/bancai_images/test/dot/dot_03171730_919.png']
---------------------
+ensemble(thresh = 0.6)
+[1155, 160]
+[4, 850]
+wrong image:
+['/home/sjtu/Downloads/boyu/bancai_images/test/abrasion/abrasion_0316_1702_4028.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_966.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_975.png', '/home/sjtu/Downloads/boyu/bancai_images/test/dot/dot_03171730_919.png']
 
+inception:
 image_num: 2169
 correct: 2073
 false positive: 40
 false nagetive: 18
 wrong type: 38
-Res Matrix:
 ['abrasion', 'spot', 'normal', 'chipping', 'cut', 'dot']
 [162, 0, 5, 0, 3, 0]
 [0, 145, 3, 0, 0, 17]
@@ -37,7 +23,53 @@ Res Matrix:
 [0, 0, 0, 184, 0, 1]
 [0, 1, 6, 0, 162, 0]
 [0, 15, 4, 0, 1, 145]
-average time: 1.70261771341
-['/home/sjtu/Downloads/boyu/bancai_images/test/abrasion/abrasion_0316_1702_4028.png', '/home/sjtu/Downloads/boyu/bancai_images/test/spot/spot_9924.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_966.png', '/home/sjtu/Downloads/boyu/bancai_images/test/cut/cut_new_975.png', '/home/sjtu/Downloads/boyu/bancai_images/test/dot/dot_03171730_966.png', '/home/sjtu/Downloads/boyu/bancai_images/test/dot/dot_03171730_919.png']
+
+
+mobilenet:
+image_num: 2169
+correct: 2036
+false positive: 28
+false nagetive: 34
+wrong type: 71
+['abrasion', 'spot', 'normal', 'chipping', 'cut', 'dot']
+[166, 0, 4, 0, 0, 0]
+[0, 144, 2, 0, 1, 18]
+[4, 3, 1287, 0, 19, 2]
+[0, 3, 1, 181, 0, 0]
+[0, 0, 16, 0, 153, 0]
+[0, 47, 11, 0, 2, 105]
+
+test data:
+normal 1315
+abrasion 170
+chipping 185
+cut 169
+dot 165
+spot 164
+
+train data:
+bancai:
+normal 3410
+abrasion 1043
+chipping 1143
+cut 1000
+dot 999
+spot 1000
+
+xiao guang cha:
+nagetive 1421
+positive 527
+
+
+ratio 
+train .80 
+test 0.10 
+validation 0.10
+
+
+
+
+
+
 
 

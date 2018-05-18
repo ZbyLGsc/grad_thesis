@@ -1,4 +1,7 @@
-import ensemble_interface as ei
+import sys
+sys.path.append("..")
+
+import interface.ensemble_interface as ei
 import tensorflow as tf
 import os
 

@@ -1,4 +1,7 @@
-import model_interface as mi
+import sys
+sys.path.append("..")
+
+import interface.model_interface as mi
 import os
 import time
 import tensorflow as tf
@@ -47,8 +50,8 @@ def eval():
     model_mobilenet = mi.ModelInterface('Mobilenet')
 
     # specify root dir of the validation images
-    #root_dir = '/home/zby/Downloads/datasets/board_defect/test'
-    root_dir = '/home/sjtu/Downloads/boyu/bancai_images/test'
+    root_dir = '/home/zby/Downloads/datasets/board_defect/test'
+    # root_dir = '/home/sjtu/Downloads/boyu/bancai_images/test'
 
     # find sub dir names under root dir
     class_names = os.listdir(root_dir)

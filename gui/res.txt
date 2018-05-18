@@ -60,6 +60,8 @@ xiao guang cha:
 nagetive 1421
 positive 527
 
+correct: 100.0%
+
 
 ratio 
 train .80 

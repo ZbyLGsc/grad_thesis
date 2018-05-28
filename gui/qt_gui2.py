@@ -100,13 +100,22 @@ class DefectClassWindow:
                         cv2.imwrite(img_name, block)
                         cv2.imshow("block", block)
 
+                        # show the block in gui
+                        img3 = cv2.imread(str(file))
+                        cv2.rectangle(img3, (icol, irow), (icol+side_length,
+                                                           irow+side_length), (0, 255, 0), 10)
+                        mark_name = tmp_dir + '/marked.png'
+                        cv2.imwrite(mark_name, img3)
+                        pixmap = QtGui.QPixmap(mark_name).scaled(400, 600)
+                        self.image_label.setPixmap(pixmap)
+
                         # call tensorflow API
                         defect = self.model.predict(img_name, sess1, sess2)
 
                         # mark on origin image when defect detected
                         if defect:
                             cv2.rectangle(img2, (icol, irow), (icol+side_length,
-                                                              irow+side_length), (0, 0, 255), 10)
+                                                               irow+side_length), (0, 0, 255), 10)
 
                         if last_block:
                             break
@@ -135,7 +144,7 @@ class DefectClassWindow:
                         cv2.waitKey(1)
             # main loop end
 
-            # save the marked image and show it 
+            # save the marked image and show it
             mark_name = tmp_dir + '/marked.png'
             cv2.imwrite(mark_name, img2)
             pixmap = QtGui.QPixmap(mark_name).scaled(400, 600)

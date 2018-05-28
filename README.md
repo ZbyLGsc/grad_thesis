@@ -83,7 +83,7 @@ To use your trained model, put the *.pb* and *.txt* files generated in the last 
 After you put the two file at the right place, script in *interface* will use them for prediction. Here is how you should use *interface*
 
   <div align=center>
-  <img src="https://github.com/ZbyLGsc/grad_thesis/blob/master/pictures/1.png" width = "400" height = "200">
+  <img src="https://github.com/ZbyLGsc/grad_thesis/blob/master/pictures/1.png" width = "660" height = "229">
   </div>
 
 For more information about how to use *model_interface.py* and *ensemble_interface.py*, see *evaluation* and
@@ -101,7 +101,7 @@ Then you should press **Open** and select a image. A example image *029(3).tif* 
 
 If the everything run correctly, you should see something like this:
   <div align=center>
-  <img src="https://github.com/ZbyLGsc/grad_thesis/blob/master/pictures/2.png" width = "200" height = "400">
+  <img src="https://github.com/ZbyLGsc/grad_thesis/blob/master/pictures/2.png" width = "418" height = "720">
   </div>
 
 ## 6.Simulated dataset generation
